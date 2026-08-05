@@ -1,45 +1,82 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".AddnoteActivity">
 
+    <!-- 1. ช่อง Title -->
     <EditText
         android:id="@+id/editTextText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:hint="ชื่อเรื่อง (Title)"
         android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="87dp"
-        tools:layout_editor_absoluteY="59dp" />
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- 2. ช่อง Content -->
     <EditText
         android:id="@+id/editTextText2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="89dp"
-        tools:layout_editor_absoluteY="119dp" />
+        android:layout_marginTop="8dp"
+        android:hint="เนื้อหาโน้ต (ใช้ , คั่นรายการสำหรับ CheckList)"
+        android:inputType="textMultiLine"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextText" />
 
+    <!-- 3. เพิ่ม CheckBox ย้ายมาอยู่เหนือปุ่มบันทึก -->
+    <CheckBox
+        android:id="@+id/checkBoxIsChecklist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="สร้างเป็น CheckList Note"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextText2" />
+
+    <!-- 4. ปุ่มบันทึก -->
     <Button
         android:id="@+id/button4"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="205dp"
-        tools:layout_editor_absoluteY="199dp" />
+        android:layout_marginTop="8dp"
+        android:text="บันทึกโน้ต"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/checkBoxIsChecklist" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="210dp"
-        android:layout_height="117dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="91dp"
-        tools:layout_editor_absoluteY="280dp" />
+    <!-- 5. ScrollView และ TextView ส่วนแสดงผล -->
+    <ScrollView
+        android:id="@+id/scrollViewNotes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:background="#F5F5F5"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button4">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            tools:text="--- โน้ตทั้งหมดจะแสดงตรงนี้ ---" />
+
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
