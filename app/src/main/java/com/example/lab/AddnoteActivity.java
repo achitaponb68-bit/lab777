@@ -3,7 +3,7 @@ package com.example.lab;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox; // [เพิ่ม Import]
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,14 +14,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.Date;
-
 public class AddnoteActivity extends AppCompatActivity {
 
-    EditText Title, Content;
-    Button addNote;
-    TextView showNote;
-    CheckBox checkBoxIsChecklist; // [เพิ่ม 1]: ตัวแปร CheckBox
+    private EditText Title, Content;
+    private Button addNote;
+    private TextView showNote;
+    private CheckBox checkBoxIsChecklist;
+
+    // ประกาศ Controller สำหรับจัดการ Business Logic
+    private NoteController noteController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,12 @@ public class AddnoteActivity extends AppCompatActivity {
         Content = findViewById(R.id.editTextText2);
         addNote = findViewById(R.id.button4);
         showNote = findViewById(R.id.textView2);
-        checkBoxIsChecklist = findViewById(R.id.checkBoxIsChecklist); // [เพิ่ม 2]: ผูก ID
+        checkBoxIsChecklist = findViewById(R.id.checkBoxIsChecklist);
 
+        // สร้าง Controller โดยส่ง User ปัจจุบันเข้าไป
+        noteController = new NoteController(MainActivity.currentUser);
+
+        // แสดงผลโน้ตเริ่มต้น
         updateNoteDisplay();
 
         addNote.setOnClickListener(new View.OnClickListener() {
@@ -54,30 +59,16 @@ public class AddnoteActivity extends AppCompatActivity {
                     return;
                 }
 
-                Note note;
+                // ส่งข้อมูลไปจัดการผ่าน Controller แทนการสร้าง Object โน้ตใน Activity
+                noteController.addNote(strofTitle, strofContent, checkBoxIsChecklist.isChecked());
 
-                // [เพิ่ม 3]: เช็กถ้ามีการติ๊กถูก หรือ พิมพ์ comma ให้เป็น CheckListNote
-                if (checkBoxIsChecklist.isChecked() || strofContent.contains(",")) {
-                    CheckListNote checkListNote = new CheckListNote(strofTitle, strofContent);
-                    String[] items = strofContent.split("[,\\n]");
-                    for (String item : items) {
-                        if (!item.trim().isEmpty()) {
-                            checkListNote.getCheckList().add(item.trim());
-                        }
-                    }
-                    note = checkListNote;
-                } else {
-                    note = new TextNote(strofTitle, strofContent);
-                }
-
-                note.setCreatedDate(new Date());
-                MainActivity.currentUser.addNote(note);
-
+                // อัปเดตการแสดงผลผ่าน Controller
                 updateNoteDisplay();
 
+                // เคลียร์ค่า UI
                 Title.setText("");
                 Content.setText("");
-                checkBoxIsChecklist.setChecked(false); // [เพิ่ม 4]: เคลียร์สถานะติ๊กถูกหลังบันทึก
+                checkBoxIsChecklist.setChecked(false);
 
                 Toast.makeText(AddnoteActivity.this, "เพิ่มโน้ตเรียบร้อย!", Toast.LENGTH_SHORT).show();
             }
@@ -85,13 +76,7 @@ public class AddnoteActivity extends AppCompatActivity {
     }
 
     private void updateNoteDisplay() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("--- โน้ตทั้งหมดของ ").append(MainActivity.currentUser.getFullName()).append(" ---\n\n");
-
-        for (Note n : MainActivity.currentUser.getAllNote()) {
-            sb.append(n.getSummary()).append("\n-----------------------------------\n");
-        }
-
-        showNote.setText(sb.toString());
+        // ดึงข้อความสรุปโน้ตที่ฟอร์แมตแล้วจาก Controller มาแสดงผลบน TextView
+        showNote.setText(noteController.getFormattedNotes());
     }
 }

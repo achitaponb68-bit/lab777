@@ -28,7 +28,7 @@ public class AboutMeActivity extends AppCompatActivity {
         });
 
         // ปุ่ม Back ใน activity_about_me.xml
-        nButton = findViewById(R.id.button2);
+        nButton = findViewById(R.id.button3);
         nButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
