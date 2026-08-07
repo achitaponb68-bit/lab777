@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
     Button mButton;
     Button mAddnote;
+    Button bBrowsenote;
+    ImageView logoImage;
+    ProgressBar loadData;
 
     // สร้าง User เป็น static object เพื่อใช้งานร่วมกันในทุก Activity
     public static User currentUser = new User("A01", "achi", "032", "achi Achitapon");
@@ -34,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         // event source
         mButton = findViewById(R.id.button);
         mAddnote = findViewById(R.id.button2);
-
+        bBrowsenote = findViewById(R.id.button5);
         // [แก้ไข] แยก Listener ออกจากกัน ไม่ซ้อนกัน
         mAddnote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,5 +58,33 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(aboutMeIntent);
             }
         });
+        loadData = findViewById(R.id.progressBar);
+        loadData.setVisibility(View.GONE);
+        bBrowsenote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //show progress bar
+                loadData.setVisibility(View.VISIBLE);
+
+                //Create Thread
+                new Thread(()->{
+                    //load data from DB (deley 4 seconds)
+                    try {
+                        Thread.sleep(4000);
+                    }catch (InterruptedException e){
+                    }
+                    //return to main Thread
+                    runOnUiThread(()->{
+                        loadData.setVisibility(View.GONE);
+                        Intent BrowseNote = new Intent(getApplicationContext(), BrowseNote.class);
+                        startActivity(BrowseNote);
+                        finish();
+                    });
+        }).start();
+        logoImage = findViewById(R.id.imageView);
+        logoImage.setImageResource(R.drawable.sssss);
+
+    }
+});
     }
 }
