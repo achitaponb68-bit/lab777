@@ -17,4 +17,8 @@ public class TextNote extends Note {
         String ownerName = (getOwner() != null) ? getOwner().getFullName() : "ไม่ระบุเจ้าของ";
         return "[" + formatDate() + "] " + getTitle() + " (ข้อความ): " + shortContent + " | เจ้าของ: " + ownerName;
     }
+
+    public String getTextContent() {
+        return getContent();
+    }
 }

@@ -42,10 +42,10 @@ public class AddnoteActivity extends AppCompatActivity {
         showNote = findViewById(R.id.textView2);
         checkBoxIsChecklist = findViewById(R.id.checkBoxIsChecklist);
 
-        // สร้าง Controller โดยส่ง User ปัจจุบันเข้าไป
+        // สร้าง Controller โดยส่ง User ปัจจุบันเข้าไป[cite: 2, 7]
         noteController = new NoteController(MainActivity.currentUser);
 
-        // แสดงผลโน้ตเริ่มต้น
+        // แสดงผลโน้ตเริ่มต้นเมื่อเปิดหน้า Activity
         updateNoteDisplay();
 
         addNote.setOnClickListener(new View.OnClickListener() {
@@ -59,13 +59,13 @@ public class AddnoteActivity extends AppCompatActivity {
                     return;
                 }
 
-                // ส่งข้อมูลไปจัดการผ่าน Controller แทนการสร้าง Object โน้ตใน Activity
-                noteController.addNote(strofTitle, strofContent, checkBoxIsChecklist.isChecked());
+                // ส่งข้อมูลไปบันทึกผ่าน Controller (ส่ง v เพื่อไปดึง Context บันทึกลง DB)
+                noteController.addNote(strofTitle, strofContent, checkBoxIsChecklist.isChecked(), v);
 
-                // อัปเดตการแสดงผลผ่าน Controller
+                // อัปเดตการแสดงผลบน TextView[cite: 2]
                 updateNoteDisplay();
 
-                // เคลียร์ค่า UI
+                // เคลียร์ค่า UI[cite: 2]
                 Title.setText("");
                 Content.setText("");
                 checkBoxIsChecklist.setChecked(false);
@@ -76,7 +76,7 @@ public class AddnoteActivity extends AppCompatActivity {
     }
 
     private void updateNoteDisplay() {
-        // ดึงข้อความสรุปโน้ตที่ฟอร์แมตแล้วจาก Controller มาแสดงผลบน TextView
+        // ดึงข้อความสรุปโน้ตที่ฟอร์แมตแล้วจาก Controller มาแสดงผล (ไม่ต้องส่ง Parameter)[cite: 2]
         showNote.setText(noteController.getFormattedNotes());
     }
 }

@@ -11,18 +11,22 @@ public class CheckListNote extends Note {
         this.checkList = new ArrayList<>();
     }
 
-    public List<String> getCheckList(){
+    public List<String> getCheckList() {
         return checkList;
     }
 
-    public void setCheckList(List<String> checkList){
+    public void setCheckList(List<String> checkList) {
         this.checkList = checkList;
     }
 
     @Override
-    public String getSummary(){
+    public String getSummary() {
         // [ข้อ 3] ดึงชื่อ User มาแสดงผล
         String ownerName = (getOwner() != null) ? getOwner().getFullName() : "ไม่ระบุเจ้าของ";
         return "[" + formatDate() + "] " + getTitle() + " (เช็คลิสต์ " + checkList.size() + " รายการ): " + checkList.toString() + " | เจ้าของ: " + ownerName;
+    }
+
+    public List<String> getItems() {
+        return checkList; // คืนค่ารายการ checkList ออกไป
     }
 }

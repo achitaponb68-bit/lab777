@@ -13,6 +13,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.List;
+
 public class BrowseNote extends AppCompatActivity {
 
     private EditText etSearch;
@@ -68,5 +70,19 @@ public class BrowseNote extends AppCompatActivity {
                 }).start();
             }
         });
+        //load data from dbExecutors.newSingleThreadExecutor().execute(() -> {
+        List<NoteEntity> entities = AppDatabase.getInstance(this).noteDao().getAll();
+        List<Note> notes = new ArrayList<>();
+        for (NoteEntity e : entities) {
+            notes.add(NoteMapper.fromEntity(e));
+        }
+
+// display on UI thread runOnUiThread(() -> {
+        StringBuilder sb = new StringBuilder();
+        for (Note n : notes) {
+            sb.append(n.display()).append("\n");
+        }
+        showNote.setText(sb.toString());
+    });
     }
 }
